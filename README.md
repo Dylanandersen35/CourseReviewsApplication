@@ -2,7 +2,7 @@
 # Homework 6 - Responding to Change
 
 ## Authors
-1) Name, netid, [GitHub profile name]
+1) Reece Mullahy, tbp3qy, reecemullahy
 2) Name, netid, [GitHub profile name]
 3) Name, netid, [GitHub profile name]
 4) Name, netid, [GitHub profile name]
