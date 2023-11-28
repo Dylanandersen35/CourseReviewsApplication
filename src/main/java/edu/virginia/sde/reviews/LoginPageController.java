@@ -40,6 +40,77 @@ public class LoginPageController {
         this.users = users;
     }
 
+    /*
+    public boolean logInErrors() {
+        var attemptedUsername = usernameField.getText();
+        var attemptedPassword = passwordField.getText();
+
+        for (User user : users) {
+            if (attemptedUsername.equals(user.getUsername())) {
+                if (!attemptedPassword.equals(user.getPassword())) {
+                    errorMessage.setText("Error: password does not match username");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        errorMessage.setText("username does not exist");
+        return true;
+    }
+     */
+
+    public boolean usernameDoesNotExist() {
+        var attemptedUsername = usernameField.getText();
+        var attemptedPassword = passwordField.getText();
+
+        for (User user : users) {
+            if (attemptedUsername.equals(user.getUsername())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean passwordDoesNotMatch() {
+        var attemptedUsername = usernameField.getText();
+        var attemptedPassword = passwordField.getText();
+
+        for (User user : users) {
+            if (attemptedUsername.equals(user.getUsername())) {
+                if (!attemptedPassword.equals(user.getPassword())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @FXML
+    public void handleSignInButton() {
+        if (usernameDoesNotExist()) {
+            errorMessage.setText("Error: username does not exist");
+            return;
+        }
+        if (passwordDoesNotMatch()) {
+            errorMessage.setText("Error: incorrect password");
+            return;
+        }
+
+        try {
+            var courseSearchPage = new  FXMLLoader(CourseSearchController.class.getResource("course-search.fxml"));
+            var scene = new Scene(courseSearchPage.load());
+            var controller = (CourseSearchController) courseSearchPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            primaryStage.setTitle("Course Search");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     public void handleSignUpButton() {
         try {
