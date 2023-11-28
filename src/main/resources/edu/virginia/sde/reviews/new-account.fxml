@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CreateAccountController">
+   <children>
+      <Label alignment="CENTER" layoutX="227.0" layoutY="122.0" prefHeight="17.0" prefWidth="147.0" text="Create Account">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <TextField fx:id="newUsername" layoutX="220.0" layoutY="174.0" promptText="username" />
+      <PasswordField fx:id="newPassword" layoutX="220.0" layoutY="213.0" promptText="password" />
+      <Button fx:id="createAccountButton" onAction="#handleCreateAccountButton" layoutX="249.0" layoutY="264.0" mnemonicParsing="false" text="Create Account" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="43.0" layoutY="305.0" prefHeight="17.0" prefWidth="514.0" />
+   </children>
+</AnchorPane>

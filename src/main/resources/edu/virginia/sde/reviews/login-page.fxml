@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.LoginPageController">
    <children>
       <Label alignment="CENTER" layoutX="170.0" layoutY="53.0" prefHeight="47.0" prefWidth="261.0" text="Welcome to Course Reviews!">
          <font>
@@ -15,10 +15,11 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField layoutX="221.0" layoutY="161.0" promptText="username" />
-      <Button layoutX="273.0" layoutY="235.0" mnemonicParsing="false" text="Sign in" />
-      <Label alignment="CENTER" layoutX="221.0" layoutY="293.0" prefHeight="17.0" prefWidth="160.0" text="Don't Have an Account?" />
-      <Button layoutX="271.0" layoutY="316.0" mnemonicParsing="false" text="Sign up" />
-      <PasswordField layoutX="221.0" layoutY="194.0" promptText="password" />
+      <TextField fx:id="usernameField" layoutX="221.0" layoutY="161.0" promptText="username" />
+      <Button fx:id="signInButton" layoutX="273.0" layoutY="235.0" mnemonicParsing="false" text="Sign in" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="221.0" layoutY="293.0" prefHeight="17.0" prefWidth="160.0" text="Don't Have an Account?" />
+      <Button fx:id="signUpButton" layoutX="271.0" layoutY="316.0" mnemonicParsing="false" onAction="#handleSignUpButton" text="Sign up" />
+      <PasswordField fx:id="passwordField" layoutX="221.0" layoutY="194.0" promptText="password" />
+      <Label layoutX="60.0" layoutY="269.0" prefHeight="17.0" prefWidth="482.0" />
    </children>
 </AnchorPane>
