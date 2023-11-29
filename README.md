@@ -4,7 +4,7 @@
 ## Authors
 1) Reece Mullahy, tbp3qy, reecemullahy
 2) Sai Kodali, sk6uzp, saikodali1
-3) Name, netid, [GitHub profile name]
+3) Max Caboti-Jones, msc2mg, msc2mg
 4) Name, netid, [GitHub profile name]
 
 ## To Run
