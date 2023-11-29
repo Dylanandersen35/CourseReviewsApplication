@@ -166,4 +166,22 @@ public class CourseSearchController {
 
         addError.setText("");
     }
+
+    @FXML
+    public void handleMyReviewsButton() {
+        try {
+            var myReviewsPage = new  FXMLLoader(MyReviewsController.class.getResource("my-reviews.fxml"));
+            var scene = new Scene(myReviewsPage.load());
+            var controller = (MyReviewsController) myReviewsPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            controller.setCourses(courses);
+            controller.setActiveUser(activeUser);
+            primaryStage.setTitle("My Reviews");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
