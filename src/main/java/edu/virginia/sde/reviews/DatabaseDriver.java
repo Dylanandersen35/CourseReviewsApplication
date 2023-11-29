@@ -66,6 +66,22 @@ public class DatabaseDriver {
             statement1.executeUpdate();
             connection.commit();
 
+            var statement2 = connection.prepareStatement(
+                    """
+                    CREATE TABLE IF NOT EXISTS Reviews (
+                    ID INTEGER PRIMARY KEY, 
+                    UserID INTEGER NOT NULL, 
+                    CourseID INTEGER NOT NULL, 
+                    Review TEXT,
+                    Rating INTEGER NOT NULL,
+                    FOREIGN KEY(UserID) REFERENCES Users(ID) ON DELETE CASCADE, 
+                    FOREIGN KEY(CourseID) References Courses(ID) ON DELETE CASCADE
+                    );
+            """);
+
+            statement2.executeUpdate();
+            connection.commit();
+
             /*
             var createTables = List.of(createUsersTable, createCoursesTable);
             for (var query : createTables) {
@@ -74,6 +90,7 @@ public class DatabaseDriver {
                 preparedStatement.close();
             }
              */
+
         } catch (SQLException e) {
             connection.rollback();
             throw e;
