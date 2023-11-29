@@ -55,7 +55,6 @@ public class CreateAccountController {
             return;
         }
 
-        // add new user to database with username and password
         User newUser = new User(newUsername.getText(), newPassword.getText());
         users.add(newUser);
 

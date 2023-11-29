@@ -22,8 +22,8 @@ public class LoginPageController {
     @FXML
     private Label errorMessage;
     private Stage primaryStage;
-
     private List<User> users;
+    private User activeUser;
 
     public void initialize() {
         usernameField.setText("");
@@ -86,6 +86,16 @@ public class LoginPageController {
         return false;
     }
 
+    public User getActiveUser() {
+        for (User user : users) {
+            String activeUsername = usernameField.getText();
+            if (user.getUsername().equals(activeUsername)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     @FXML
     public void handleSignInButton() {
         if (usernameDoesNotExist()) {
@@ -103,6 +113,7 @@ public class LoginPageController {
             var controller = (CourseSearchController) courseSearchPage.getController();
             controller.setPrimaryStage(primaryStage);
             controller.setUsers(users);
+            controller.setActiveUser(getActiveUser());
             primaryStage.setTitle("Course Search");
             primaryStage.setScene(scene);
             primaryStage.show();
