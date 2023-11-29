@@ -156,7 +156,7 @@ public class DatabaseDriver {
                 course.setSubject(rs.getString("Subject"));
                 course.setCourseNumber(rs.getInt("CourseNumber"));
                 course.setTitle(rs.getString("Title"));
-                course.setRating(rs.getInt("rating"));
+                course.setRating(rs.getInt("Rating"));
                 courses.add(course);
             }
 
@@ -178,6 +178,53 @@ public class DatabaseDriver {
                 statement.setInt(2, course.getCourseNumber());
                 statement.setString(3, course.getTitle());
                 statement.setInt(4, course.getRating());
+                statement.executeUpdate();
+            }
+            connection.commit();
+
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        }
+    }
+
+    public List<Review> getAllReviews() {
+        var reviews = new ArrayList<Review>();
+        try {
+            var statement = connection.prepareStatement(
+                    """
+                        SELECT * from Reviews;
+                    """
+            );
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Review review = new Review();
+                review.setUserID(rs.getInt("UserID"));
+                review.setCourseID(rs.getInt("CourseID"));
+                review.setReview(rs.getString("Review"));
+                review.setRating(rs.getInt("Rating"));
+                reviews.add(review);
+            }
+
+            return reviews;
+
+        } catch (SQLException e) {
+            return reviews;
+        }
+    }
+
+    public void updateReviews(List<Review> reviews) throws SQLException {
+        try {
+            var clearStatement = connection.prepareStatement("DELETE FROM Reviews");
+            clearStatement.executeUpdate();
+
+            var statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, Review, Rating) VALUES (?, ?, ?, ?)");
+            for (Review review : reviews) {
+                statement.setInt(1, review.getUserID());
+                statement.setInt(2, review.getCourseID());
+                statement.setString(3, review.getReview());
+                statement.setInt(4, review.getRating());
                 statement.executeUpdate();
             }
             connection.commit();
