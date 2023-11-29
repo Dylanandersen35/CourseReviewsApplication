@@ -16,7 +16,7 @@
                   <TextField fx:id="numberSearch" layoutX="185.0" layoutY="59.0" prefHeight="26.0" prefWidth="65.0" />
                   <Label alignment="CENTER" layoutX="250.0" layoutY="64.0" prefHeight="17.0" prefWidth="33.0" text="Title" />
                   <TextField fx:id="titleSearch" layoutX="283.0" layoutY="59.0" prefHeight="26.0" prefWidth="201.0" />
-                  <Button fx:id="searchButton" layoutX="498.0" layoutY="59.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Search" />
+                  <Button fx:id="searchButton" layoutX="498.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="26.0" prefWidth="72.0" text="Search" />
                   <Button fx:id="myReviewsButton" layoutX="35.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleMyReviewsButton" text="My Reviews" />
                   <Button layoutX="504.0" layoutY="14.0" mnemonicParsing="false" text="Log Out" />
                   <Label fx:id="searchError" alignment="CENTER" layoutX="104.0" layoutY="84.0" prefHeight="21.0" prefWidth="392.0" />

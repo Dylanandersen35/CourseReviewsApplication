@@ -167,6 +167,66 @@ public class CourseSearchController {
         addError.setText("");
     }
 
+    public boolean searchSubjectInputError() {
+        if (subjectSearch.getText().equals("")) { return false; }
+
+        if (subjectSearch.getText().length() < 2 || subjectSearch.getText().length() > 4) {
+            searchError.setText("Error: incorrect subject input");
+            return true;
+        }
+        if (!isValidSubject(subjectSearch.getText())) {
+            searchError.setText("Error: incorrect subject input");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean searchNumberInputError() {
+        if (numberSearch.getText().equals("")) { return false; }
+
+        if (numberSearch.getText().length() != 4) {
+            searchError.setText("Error: incorrect number input");
+            return true;
+        }
+        if (!isValidNumber(numberSearch.getText())) {
+            searchError.setText("Error: incorrect number input");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean searchTitleInputError() {
+        if (titleSearch.getText().equals("")) { return false; }
+
+        if (titleSearch.getText().length() < 1 || titleSearch.getText().length() > 50) {
+            searchError.setText("Error: incorrect title input");
+            return true;
+        }
+        return false;
+    }
+
+    @FXML
+    public void handleSearchButton() {
+        var subjectInput = subjectSearch.getText().toUpperCase();
+        var numberInput = numberSearch.getText();
+        var titleInput = titleSearch.getText().toUpperCase();
+        ObservableList<Course> searchedCourses = FXCollections.observableArrayList();
+
+        if (searchSubjectInputError()) { return; }
+        if (searchNumberInputError()) { return; }
+        if (searchTitleInputError()) { return; }
+
+        for (Course course : courses) {
+            if ((course.getSubject().equals(subjectInput) || subjectInput.equals("")) && (
+                    numberInput.equals("") || course.getCourseNumber() == Integer.parseInt(numberInput)) && (
+                    course.getTitle().toUpperCase().contains(titleInput) || titleInput.equals(""))) {
+                searchedCourses.add(course);
+            }
+        }
+
+        courseTable.setItems(searchedCourses);
+    }
+
     @FXML
     public void handleMyReviewsButton() {
         try {
