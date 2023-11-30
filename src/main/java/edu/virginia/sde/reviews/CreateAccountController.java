@@ -74,6 +74,23 @@ public class CreateAccountController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-}
+
+    public void handleBackButton() {
+        try {
+            var userService = new UserService();
+            var users = userService.retrieveUsers();
+
+            var loginPage = new FXMLLoader(CourseReviewsApplication.class.getResource("login-page.fxml"));
+            var scene = new Scene(loginPage.load());
+            var controller = (LoginPageController) loginPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            primaryStage.setTitle("Course Reviews");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+ }

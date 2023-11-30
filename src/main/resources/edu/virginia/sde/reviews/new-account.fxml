@@ -12,7 +12,8 @@
          </font></Label>
       <TextField fx:id="newUsername" layoutX="220.0" layoutY="174.0" promptText="username" />
       <PasswordField fx:id="newPassword" layoutX="220.0" layoutY="213.0" promptText="password" />
-      <Button fx:id="createAccountButton" onAction="#handleCreateAccountButton" layoutX="249.0" layoutY="264.0" mnemonicParsing="false" text="Create Account" />
+      <Button fx:id="createAccountButton" layoutX="249.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleCreateAccountButton" text="Create Account" />
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="43.0" layoutY="305.0" prefHeight="17.0" prefWidth="514.0" />
+      <Button fx:id="backButton" layoutX="514.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleBackButton" text="Back" />
    </children>
 </AnchorPane>
