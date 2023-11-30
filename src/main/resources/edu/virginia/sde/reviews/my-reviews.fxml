@@ -15,20 +15,23 @@
                         <Font name="Arial Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button onAction="#handleCourseSearchButton" layoutX="27.0" layoutY="19.0" mnemonicParsing="false" text="Course Search" />
-                  <Button layoutX="513.0" layoutY="19.0" mnemonicParsing="false" text="Log Out" />
+                  <Button layoutX="27.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleCourseSearchButton" text="Course Search" />
+                  <Button layoutX="513.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleLogOutButton" text="Log Out" />
                </children>
             </AnchorPane>
          </top>
          <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="reviewsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn prefWidth="96.0" text="Subject" />
-                <TableColumn prefWidth="100.0" text="Number" />
-                  <TableColumn prefWidth="330.0" text="Title" />
-                  <TableColumn minWidth="0.0" prefWidth="73.0" text="Rating" />
+                <TableColumn fx:id="subjectColumn" prefWidth="96.0" text="Subject" />
+                <TableColumn fx:id="numberColumn" prefWidth="100.0" text="Number" />
+                  <TableColumn fx:id="titleColumn" prefWidth="330.0" text="Title" />
+                  <TableColumn fx:id="ratingColumn" minWidth="0.0" prefWidth="73.0" text="Rating" />
               </columns>
             </TableView>
-         </center></BorderPane>
+         </center>
+         <bottom>
+            <Label fx:id="errorCheck" prefHeight="17.0" prefWidth="326.0" BorderPane.alignment="CENTER" />
+         </bottom></BorderPane>
    </children>
 </AnchorPane>

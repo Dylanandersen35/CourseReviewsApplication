@@ -38,4 +38,22 @@ public class CoursesService {
             }
         }
     }
+
+    public Course retrieveCourseByID(int id) {
+        DatabaseDriver databaseDriver = null;
+        try {
+            databaseDriver = new DatabaseDriver();
+            return databaseDriver.getCourseByID(id);
+        } catch (SQLException e) {
+            return new Course();
+        } finally {
+            try {
+                if (databaseDriver != null) {
+                    databaseDriver.disconnect();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

@@ -92,6 +92,24 @@ public class DatabaseDriver {
         }
     }
 
+    public int getUserID(String username) {
+        try {
+            var statement = connection.prepareStatement(
+                    """
+                        SELECT * from Users;
+                    """);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                if (username.equals(rs.getString("Username"))) {
+                    return rs.getInt("ID");
+                }
+            }
+            return 0;
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
     public void updateUsers(List<User> users) throws SQLException {
         try {
             var clearStatement = connection.prepareStatement("DELETE FROM Users");
@@ -136,6 +154,26 @@ public class DatabaseDriver {
 
         } catch (SQLException e) {
             return courses;
+        }
+    }
+
+    public Course getCourseByID(int id) {
+        try {
+            var statement = connection.prepareStatement(
+                    """
+                        SELECT * from Courses;
+                    """
+            );
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("ID") == id) {
+                    return new Course(rs.getString("Subject"), rs.getInt("CourseNumber"), rs.getString("Title"), rs.getInt("Rating"));
+                }
+            }
+            return new Course();
+        } catch (SQLException e) {
+            return new Course();
         }
     }
 

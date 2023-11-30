@@ -40,4 +40,22 @@ public class UserService {
             }
         }
     }
+
+    public int retrieveUserID(String username) {
+        DatabaseDriver databaseDriver = null;
+        try {
+            databaseDriver = new DatabaseDriver();
+            return databaseDriver.getUserID(username);
+        } catch (SQLException e) {
+            return 0;
+        } finally {
+            try {
+                if (databaseDriver != null) {
+                    databaseDriver.disconnect();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

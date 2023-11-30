@@ -23,7 +23,7 @@ public class LoginPageController {
     private Label errorMessage;
     private Stage primaryStage;
     private List<User> users;
-    private User activeUser;
+    //private User activeUser;
 
     public void initialize() {
         usernameField.setText("");
@@ -40,25 +40,6 @@ public class LoginPageController {
         this.users = users;
     }
 
-    /*
-    public boolean logInErrors() {
-        var attemptedUsername = usernameField.getText();
-        var attemptedPassword = passwordField.getText();
-
-        for (User user : users) {
-            if (attemptedUsername.equals(user.getUsername())) {
-                if (!attemptedPassword.equals(user.getPassword())) {
-                    errorMessage.setText("Error: password does not match username");
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        errorMessage.setText("username does not exist");
-        return true;
-    }
-     */
 
     public boolean usernameDoesNotExist() {
         var attemptedUsername = usernameField.getText();
@@ -107,13 +88,14 @@ public class LoginPageController {
             return;
         }
 
+        var activeUser = getActiveUser();
         try {
             var courseSearchPage = new  FXMLLoader(CourseSearchController.class.getResource("course-search.fxml"));
             var scene = new Scene(courseSearchPage.load());
             var controller = (CourseSearchController) courseSearchPage.getController();
             controller.setPrimaryStage(primaryStage);
             controller.setUsers(users);
-            controller.setActiveUser(getActiveUser());
+            controller.setActiveUser(activeUser);
             primaryStage.setTitle("Course Search");
             primaryStage.setScene(scene);
             primaryStage.show();

@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -17,30 +14,38 @@ import java.util.List;
 
 public class MyReviewsController {
     @FXML
-    private TableView<Review> reviewsTable;
+    private TableView<Course> reviewsTable;
     @FXML
-    private TableColumn<Review, String> subjectColumn;
+    private TableColumn<Course, String> subjectColumn;
     @FXML
-    private TableColumn<Review, Integer> numberColumn;
+    private TableColumn<Course, Integer> numberColumn;
     @FXML
-    private TableColumn<Review, String> titleColumn;
+    private TableColumn<Course, String> titleColumn;
     @FXML
-    private TableColumn<Review, Integer> ratingColumn;
+    private TableColumn<Course, Integer> ratingColumn;
     private Stage primaryStage;
     private List<User> users;
     private List<Course> courses;
     private List<Review> reviews;
     private User activeUser;
+    private int activeUserID;
+    private UserService userService;
 
     public void initialize() {
         var reviewsService = new ReviewsService();
         reviews = reviewsService.retrieveReviews();
 
-        //subjectColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("subject"));
-        //numberColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("courseNumber"));
-        //titleColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("title"));
-        //ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
-        //reviewsTable.setItems(getReviews());
+        subjectColumn.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
+        numberColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("courseNumber"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("rating"));
+        ratingColumn.setCellFactory(tc -> new TableCell<Course, Integer>() {
+            @Override
+            protected void updateItem(Integer rating, boolean empty) {
+                super.updateItem(rating, empty);
+                setText(empty || rating == null ? "" : rating.toString());
+            }
+        });
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -58,16 +63,23 @@ public class MyReviewsController {
     }
 
 
-    /*
-    public ObservableList<Review> getReviews() {
-        ObservableList<Review> tableReviews = FXCollections.observableArrayList();
+    public void coursesReviewedByUser(String username) {
+        ObservableList<Course> tableCourses = FXCollections.observableArrayList();
+        userService = new UserService();
+        activeUserID = userService.retrieveUserID(username);
+
         for (Review review : reviews) {
-            tableReviews.add(review);
+            if (review.getUserID() == activeUserID) {
+                var courseID = review.getCourseID();
+                var courseService = new CoursesService();
+                var currCourse = courseService.retrieveCourseByID(courseID);
+                var reviewedCourse = new Course(currCourse.getSubject(), currCourse.getCourseNumber(), currCourse.getTitle(), review.getRating());
+                tableCourses.add(reviewedCourse);
+            }
         }
-        return tableReviews;
+        reviewsTable.setItems(tableCourses);
     }
 
-     */
     @FXML
     public void handleCourseSearchButton() {
         try {
@@ -78,6 +90,22 @@ public class MyReviewsController {
             controller.setUsers(users);
             controller.setActiveUser(activeUser);
             primaryStage.setTitle("Course Search");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void handleLogOutButton() {
+        try {
+            var logoutPage = new FXMLLoader(CourseReviewsApplication.class.getResource("login-page.fxml"));
+            var scene = new Scene(logoutPage.load());
+            var controller = (LoginPageController) logoutPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            primaryStage.setTitle("Course Reviews");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
