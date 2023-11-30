@@ -65,6 +65,13 @@ public class CourseSearchController {
         numberColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("courseNumber"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("rating"));
+        ratingColumn.setCellFactory(tc -> new TableCell<Course, Integer>() {
+            @Override
+            protected void updateItem(Integer rating, boolean empty) {
+                super.updateItem(rating, empty);
+                setText(empty || rating == null ? "" : rating.toString());
+            }
+        });
         courseTable.setItems(getCourses());
     }
 
@@ -156,7 +163,7 @@ public class CourseSearchController {
             return;
         }
 
-        Course newCourse = new Course(subjectAdd.getText().toUpperCase(), Integer.parseInt(numberAdd.getText()), titleAdd.getText(), -1);
+        Course newCourse = new Course(subjectAdd.getText().toUpperCase(), Integer.parseInt(numberAdd.getText()), titleAdd.getText(), null);
         courses.add(newCourse);
 
         var service = new CoursesService();

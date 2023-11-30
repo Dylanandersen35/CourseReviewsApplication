@@ -127,7 +127,8 @@ public class DatabaseDriver {
                 course.setSubject(rs.getString("Subject"));
                 course.setCourseNumber(rs.getInt("CourseNumber"));
                 course.setTitle(rs.getString("Title"));
-                course.setRating(rs.getInt("Rating"));
+                int rating = rs.getInt("Rating");
+                course.setRating(rs.wasNull() ? null : rating);
                 courses.add(course);
             }
 
@@ -148,7 +149,7 @@ public class DatabaseDriver {
                 statement.setString(1, course.getSubject());
                 statement.setInt(2, course.getCourseNumber());
                 statement.setString(3, course.getTitle());
-                statement.setInt(4, course.getRating());
+                statement.setObject(4, course.getRating(), Types.INTEGER);
                 statement.executeUpdate();
             }
             connection.commit();
