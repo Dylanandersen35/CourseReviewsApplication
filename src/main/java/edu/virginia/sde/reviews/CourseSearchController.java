@@ -244,4 +244,20 @@ public class CourseSearchController {
             throw new RuntimeException(e);
         }
     }
+
+    @FXML
+    public void handleLogOutButton() {
+        try {
+            var logoutPage = new FXMLLoader(CourseReviewsApplication.class.getResource("login-page.fxml"));
+            var scene = new Scene(logoutPage.load());
+            var controller = (LoginPageController) logoutPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            primaryStage.setTitle("Course Reviews");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -18,7 +18,7 @@
                   <TextField fx:id="titleSearch" layoutX="283.0" layoutY="59.0" prefHeight="26.0" prefWidth="201.0" />
                   <Button fx:id="searchButton" layoutX="498.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="26.0" prefWidth="72.0" text="Search" />
                   <Button fx:id="myReviewsButton" layoutX="35.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleMyReviewsButton" text="My Reviews" />
-                  <Button layoutX="504.0" layoutY="14.0" mnemonicParsing="false" text="Log Out" />
+                  <Button layoutX="504.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLogOutButton" text="Log Out" />
                   <Label fx:id="searchError" alignment="CENTER" layoutX="104.0" layoutY="84.0" prefHeight="21.0" prefWidth="392.0" />
                   <Label alignment="CENTER" layoutX="229.0" layoutY="16.0" text="Course Search">
                      <font>
