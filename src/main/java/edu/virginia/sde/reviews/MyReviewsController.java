@@ -3,6 +3,8 @@ package edu.virginia.sde.reviews;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -10,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MyReviewsController {
@@ -65,5 +68,21 @@ public class MyReviewsController {
     }
 
      */
+    @FXML
+    public void handleCourseSearchButton() {
+        try {
+            var courseSearchPage = new FXMLLoader(CourseSearchController.class.getResource("course-search.fxml"));
+            var scene = new Scene(courseSearchPage.load());
+            var controller = (CourseSearchController) courseSearchPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            controller.setActiveUser(activeUser);
+            primaryStage.setTitle("Course Search");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

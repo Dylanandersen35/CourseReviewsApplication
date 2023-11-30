@@ -15,7 +15,7 @@
                         <Font name="Arial Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="27.0" layoutY="19.0" mnemonicParsing="false" text="Course Search" />
+                  <Button onAction="#handleCourseSearchButton" layoutX="27.0" layoutY="19.0" mnemonicParsing="false" text="Course Search" />
                   <Button layoutX="513.0" layoutY="19.0" mnemonicParsing="false" text="Log Out" />
                </children>
             </AnchorPane>
