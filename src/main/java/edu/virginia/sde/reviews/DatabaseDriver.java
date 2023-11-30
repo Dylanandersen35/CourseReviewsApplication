@@ -21,26 +21,6 @@ public class DatabaseDriver {
 
     public void createTables() throws SQLException {
         try {
-            /*
-            String createUsersTable = """
-                    CREATE TABLE IF NOT EXISTS Users (
-                    ID INTEGER PRIMARY KEY, 
-                    Username TEXT NOT NULL,
-                    Password TEXT NOT NULL
-                    );
-                    """;
-
-            String createCoursesTable = """
-                    CREATE TABLE IF NOT EXISTS Courses (
-                    ID INTEGER PRIMARY KEY,
-                    Subject TEXT NOT NULL,
-                    CourseNumber INTEGER NOT NULL,
-                    Title TEXT NOT NULL,
-                    Rating INTEGER
-                    );
-                    """;
-             */
-
             var statement = connection.prepareStatement(
                     """
                     CREATE TABLE IF NOT EXISTS Users (
@@ -81,15 +61,6 @@ public class DatabaseDriver {
 
             statement2.executeUpdate();
             connection.commit();
-
-            /*
-            var createTables = List.of(createUsersTable, createCoursesTable);
-            for (var query : createTables) {
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.executeUpdate();
-                preparedStatement.close();
-            }
-             */
 
         } catch (SQLException e) {
             connection.rollback();

@@ -33,11 +33,11 @@ public class MyReviewsController {
         var reviewsService = new ReviewsService();
         reviews = reviewsService.retrieveReviews();
 
-        subjectColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("subject"));
-        numberColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("courseNumber"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("title"));
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
-        reviewsTable.setItems(getReviews());
+        //subjectColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("subject"));
+        //numberColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("courseNumber"));
+        //titleColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("title"));
+        //ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
+        //reviewsTable.setItems(getReviews());
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -54,6 +54,8 @@ public class MyReviewsController {
             this.courses = courses;
     }
 
+
+    /*
     public ObservableList<Review> getReviews() {
         ObservableList<Review> tableReviews = FXCollections.observableArrayList();
         for (Review review : reviews) {
@@ -61,5 +63,7 @@ public class MyReviewsController {
         }
         return tableReviews;
     }
+
+     */
 
 }
