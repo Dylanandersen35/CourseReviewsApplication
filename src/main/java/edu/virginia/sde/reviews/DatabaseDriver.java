@@ -54,6 +54,7 @@ public class DatabaseDriver {
                     CourseID INTEGER NOT NULL, 
                     Review TEXT,
                     Rating INTEGER NOT NULL,
+                    Timestamp BIGINT,
                     FOREIGN KEY(UserID) REFERENCES Users(ID) ON DELETE CASCADE, 
                     FOREIGN KEY(CourseID) References Courses(ID) ON DELETE CASCADE
                     );
@@ -244,6 +245,77 @@ public class DatabaseDriver {
             throw e;
         }
     }
+
+    public Review getUserReview(int userId, int courseId) throws SQLException {
+        String query = "SELECT * FROM Reviews WHERE UserID = ? AND CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userId);
+        statement.setInt(2, courseId);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            int userID = resultSet.getInt("UserID");
+            int courseID = resultSet.getInt("CourseID");
+            String review = resultSet.getString("Review");
+            int rating = resultSet.getInt("Rating");
+            return new Review(userID, courseID, review, rating);
+        } else {
+            return null;
+        }
+    }
+
+
+    public double getAverageRating(int courseId) throws SQLException {
+        String query = "SELECT AVG(Rating) FROM Reviews WHERE CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, courseId);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getDouble(1);
+        } else {
+            return 0.0;
+        }
+    }
+
+    public void updateReview(Review review) throws SQLException {
+        String query = "UPDATE Reviews SET Review = ?, Rating = ?, Timestamp = ? WHERE UserID = ? AND CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, review.getReview());
+        statement.setInt(2, review.getRating());
+        statement.setLong(3, review.getTimestamp());
+        statement.setInt(4, review.getUserID());
+        statement.setInt(5, review.getCourseID());
+        statement.executeUpdate();
+    }
+
+    public boolean hasReviewed(User user, Course course) throws SQLException {
+        String query = "SELECT COUNT(*) FROM Reviews WHERE UserID = ? AND CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, user.getId());
+        statement.setInt(2, course.getCourseNumber());
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next() && resultSet.getInt(1) > 0;
+    }
+
+    public void addReview(Review review) throws SQLException {
+        String query = "INSERT INTO Reviews (UserID, CourseID, Review, Rating, Timestamp) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, review.getUserID());
+        statement.setInt(2, review.getCourseID());
+        statement.setString(3, review.getReview());
+        statement.setInt(4, review.getRating());
+        statement.setLong(5, review.getTimestamp());
+        statement.executeUpdate();
+    }
+
+    public void deleteReview(Review review) throws SQLException {
+        String query = "DELETE FROM Reviews WHERE UserID = ? AND CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, review.getUserID());
+        statement.setInt(2, review.getCourseID());
+        statement.executeUpdate();
+    }
+
+
 
     public void disconnect() throws SQLException {
         connection.close();

@@ -5,6 +5,16 @@ public class Review {
     private int courseID;
     private String review;
     private int rating;
+    private long timestamp;
+
+
+    public Review(int userID, int courseID, String review, int rating, long timestamp) {
+        this.userID = userID;
+        this.courseID = courseID;
+        this.review = review;
+        this.rating = rating;
+        this.timestamp = timestamp;
+    }
 
     public Review(int userID, int courseID, String review, int rating) {
         this.userID = userID;
@@ -48,4 +58,9 @@ public class Review {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public long getTimestamp() {return timestamp; }
+
+    public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
+
 }
