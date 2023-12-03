@@ -4,9 +4,9 @@ public class Course {
     private String subject;
     private int courseNumber;
     private String title;
-    private Integer rating;
+    private double rating;
 
-    public Course(String subject, int courseNumber, String title, Integer rating) {
+    public Course(String subject, int courseNumber, String title, double rating) {
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
@@ -41,11 +41,11 @@ public class Course {
         this.title = title;
     }
 
-    public Integer getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 }

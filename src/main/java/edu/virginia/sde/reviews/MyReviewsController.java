@@ -22,7 +22,7 @@ public class MyReviewsController {
     @FXML
     private TableColumn<Course, String> titleColumn;
     @FXML
-    private TableColumn<Course, Integer> ratingColumn;
+    private TableColumn<Course, Double> ratingColumn;
     private Stage primaryStage;
     private List<User> users;
     private List<Course> courses;
@@ -38,13 +38,24 @@ public class MyReviewsController {
         subjectColumn.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
         numberColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("courseNumber"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<Course, Integer>("rating"));
-        ratingColumn.setCellFactory(tc -> new TableCell<Course, Integer>() {
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<Course, Double>("rating"));
+        ratingColumn.setCellFactory(tc -> new TableCell<Course, Double>() {
             @Override
-            protected void updateItem(Integer rating, boolean empty) {
+            protected void updateItem(Double rating, boolean empty) {
                 super.updateItem(rating, empty);
-                setText(empty || rating == null ? "" : rating.toString());
+                setText(empty || rating == 0.0 ? "" : rating.toString());
             }
+        });
+
+        reviewsTable.setRowFactory(tv -> {
+            TableRow<Course> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    Course rowCourse = row.getItem();
+                    handleRowClick(rowCourse);
+                }
+            });
+            return row;
         });
     }
 
@@ -113,4 +124,23 @@ public class MyReviewsController {
         }
     }
 
+    public void handleRowClick(Course course) {
+        try {
+            var courseReview = new FXMLLoader(ReviewController.class.getResource("course-reviews.fxml"));
+            var scene = new Scene(courseReview.load());
+            var controller = (ReviewController) courseReview.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setActiveUser(activeUser);
+            controller.setUsers(users);
+            controller.setCurrentCourse(course);
+            controller.setCourseInformation(course);
+            controller.setUpTable(course);
+            controller.setUpButtons();
+            primaryStage.setTitle("Course Reviews");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

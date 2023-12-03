@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -54,7 +55,7 @@ public class DatabaseDriver {
                     CourseID INTEGER NOT NULL, 
                     Review TEXT,
                     Rating INTEGER NOT NULL,
-                    Timestamp BIGINT,
+                    Ts TEXT,
                     FOREIGN KEY(UserID) REFERENCES Users(ID) ON DELETE CASCADE, 
                     FOREIGN KEY(CourseID) References Courses(ID) ON DELETE CASCADE
                     );
@@ -146,7 +147,7 @@ public class DatabaseDriver {
                 course.setSubject(rs.getString("Subject"));
                 course.setCourseNumber(rs.getInt("CourseNumber"));
                 course.setTitle(rs.getString("Title"));
-                int rating = rs.getInt("Rating");
+                double rating = rs.getDouble("Rating");
                 course.setRating(rs.wasNull() ? null : rating);
                 courses.add(course);
             }
@@ -169,7 +170,7 @@ public class DatabaseDriver {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("ID") == id) {
-                    return new Course(rs.getString("Subject"), rs.getInt("CourseNumber"), rs.getString("Title"), rs.getInt("Rating"));
+                    return new Course(rs.getString("Subject"), rs.getInt("CourseNumber"), rs.getString("Title"), rs.getDouble("Rating"));
                 }
             }
             return new Course();
@@ -185,10 +186,10 @@ public class DatabaseDriver {
 
             var statement = connection.prepareStatement("INSERT INTO Courses(Subject, CourseNumber, Title, Rating) VALUES (?, ?, ?, ?)");
             for (Course course : courses) {
-                statement.setString(1, course.getSubject());
+                statement.setString(1, course.getSubject().toUpperCase());
                 statement.setInt(2, course.getCourseNumber());
-                statement.setString(3, course.getTitle());
-                statement.setObject(4, course.getRating(), Types.INTEGER);
+                statement.setString(3, course.getTitle().toUpperCase());
+                statement.setDouble(4, course.getRating());
                 statement.executeUpdate();
             }
             connection.commit();
@@ -215,6 +216,7 @@ public class DatabaseDriver {
                 review.setCourseID(rs.getInt("CourseID"));
                 review.setReview(rs.getString("Review"));
                 review.setRating(rs.getInt("Rating"));
+                review.setTimestamp(rs.getString("Ts"));
                 reviews.add(review);
             }
 
@@ -263,6 +265,19 @@ public class DatabaseDriver {
         }
     }
 
+    public int getCourseID(Course course) throws SQLException {
+        String query = "SELECT * FROM Courses WHERE Subject = ? AND CourseNumber = ? AND Title = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, course.getSubject().toUpperCase());
+        statement.setInt(2, course.getCourseNumber());
+        statement.setString(3, course.getTitle().toUpperCase());
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("ID");
+        }
+        return 0;
+    }
+
 
     public double getAverageRating(int courseId) throws SQLException {
         String query = "SELECT AVG(Rating) FROM Reviews WHERE CourseID = ?";
@@ -276,15 +291,25 @@ public class DatabaseDriver {
         }
     }
 
+    public void updateCourseRating(double updatedRating, int id) throws SQLException{
+        String query = "UPDATE Courses SET Rating = ? WHERE ID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setDouble(1, updatedRating);
+        statement.setInt(2, id);
+        statement.executeUpdate();
+        connection.commit();
+    }
+
     public void updateReview(Review review) throws SQLException {
-        String query = "UPDATE Reviews SET Review = ?, Rating = ?, Timestamp = ? WHERE UserID = ? AND CourseID = ?";
+        String query = "UPDATE Reviews SET Review = ?, Rating = ?, Ts = ? WHERE UserID = ? AND CourseID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, review.getReview());
         statement.setInt(2, review.getRating());
-        statement.setLong(3, review.getTimestamp());
+        statement.setString(3, review.getTimestamp());
         statement.setInt(4, review.getUserID());
         statement.setInt(5, review.getCourseID());
         statement.executeUpdate();
+        connection.commit();
     }
 
     public boolean hasReviewed(User user, Course course) throws SQLException {
@@ -297,14 +322,15 @@ public class DatabaseDriver {
     }
 
     public void addReview(Review review) throws SQLException {
-        String query = "INSERT INTO Reviews (UserID, CourseID, Review, Rating, Timestamp) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Reviews (UserID, CourseID, Review, Rating, Ts) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, review.getUserID());
         statement.setInt(2, review.getCourseID());
         statement.setString(3, review.getReview());
         statement.setInt(4, review.getRating());
-        statement.setLong(5, review.getTimestamp());
+        statement.setString(5, review.getTimestamp());
         statement.executeUpdate();
+        connection.commit();
     }
 
     public void deleteReview(Review review) throws SQLException {
@@ -315,7 +341,23 @@ public class DatabaseDriver {
         statement.executeUpdate();
     }
 
-
+    public List<Review> getReviewsByCourseID(int id) throws SQLException {
+        var reviews = new ArrayList<Review>();
+        String query = "SELECT * FROM Reviews WHERE CourseID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, id);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Review review = new Review();
+            review.setCourseID(rs.getInt("CourseID"));
+            review.setRating(rs.getInt("Rating"));
+            review.setTimestamp(rs.getString("Ts"));
+            review.setUserID(rs.getInt("UserID"));
+            review.setReview(rs.getString("Review"));
+            reviews.add(review);
+        }
+        return reviews;
+    }
 
     public void disconnect() throws SQLException {
         connection.close();

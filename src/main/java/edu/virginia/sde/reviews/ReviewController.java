@@ -1,13 +1,20 @@
 package edu.virginia.sde.reviews;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.collections.ObservableList;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.*;
 
 public class ReviewController {
 
@@ -16,7 +23,13 @@ public class ReviewController {
     @FXML
     private Text averageRating;
     @FXML
-    private ListView<Review> reviewsList;
+    private TableView<Review> reviewsTable;
+    @FXML
+    private TableColumn<Review, String> timestampColumn;
+    @FXML
+    private TableColumn<Review, String> reviewColumn;
+    @FXML
+    private TableColumn<Review, Integer> ratingColumn;
     @FXML
     private TextField ratingField;
     @FXML
@@ -31,20 +44,29 @@ public class ReviewController {
     private Button backButton;
 
     private ReviewsService reviewsService;
+    private CoursesService coursesService;
     private Course currentCourse;
     private User currentUser;
     private String mode;
     private List<User> users;
     private Stage primaryStage;
+    private int currentCourseID;
 
     public void initialize() {
-        courseInfo.setText(currentCourse.getSubject() + " " + currentCourse.getCourseNumber() + ": " + currentCourse.getTitle());
-        averageRating.setText(String.format("%.2f", reviewsService.getAverageRating(currentCourse.getCourseNumber())));
-        refreshReviewsList();
+        //courseInfo.setText(currentCourse.getSubject() + " " + currentCourse.getCourseNumber() + ": " + currentCourse.getTitle());
+        //averageRating.setText(String.format("%.2f", reviewsService.getAverageRating(currentCourse.getCourseNumber())));
+        //refreshReviewsList();
 
-        Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
-        deleteButton.setDisable(userReview == null);
-        editButton.setDisable(userReview == null);
+        timestampColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("Timestamp"));
+        reviewColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("Review"));
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("Rating"));
+
+        reviewsService = new ReviewsService();
+        coursesService = new CoursesService();
+
+        //Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
+        //deleteButton.setDisable(userReview == null);
+        //editButton.setDisable(userReview == null);
     }
 
     @FXML
@@ -62,7 +84,7 @@ public class ReviewController {
                 Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
                 userReview.setRating(rating);
                 userReview.setReview(comment);
-                userReview.setTimestamp(System.currentTimeMillis());
+                userReview.setTimestamp((new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.updateReview(userReview);
             } else {
                 if (reviewsService.hasReviewed(currentUser, currentCourse)) {
@@ -70,11 +92,14 @@ public class ReviewController {
                     return;
                 }
 
-                Review newReview = new Review(currentUser.getId(), currentCourse.getCourseNumber(), comment, rating, System.currentTimeMillis());
+                Review newReview = new Review(currentUser.getId(), coursesService.retrieveCourseID(currentCourse), comment, rating, (new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.addReview(newReview);
             }
 
-            refreshReviewsList();
+            setUpTable(currentCourse);
+            var updatedRating = reviewsService.getAverageRating(currentCourseID);
+            coursesService.updateCourseRating(updatedRating, currentCourseID);
+            averageRating.setText("" + updatedRating);
 
         } catch (NumberFormatException e) {
             showAlert("Invalid Input", "Please enter a valid rating.");
@@ -90,7 +115,8 @@ public class ReviewController {
                 .orElse(null);
         if (userReview != null) {
             reviewsService.deleteReview(userReview);
-            refreshReviewsList();
+            //refreshReviewsList();
+            setUpTable(currentCourse);
         }
     }
 
@@ -108,6 +134,7 @@ public class ReviewController {
         }
     }
 
+    /*
     private void refreshReviewsList() {
         reviewsList.getItems().clear();
         List<Review> allReviews = reviewsService.retrieveReviews();
@@ -116,10 +143,23 @@ public class ReviewController {
                 .collect(Collectors.toList());
         reviewsList.getItems().addAll(courseReviews);
     }
+     */
 
     @FXML
     private void handleBackButtonAction() {
-        //still need to setup
+        try {
+            var courseSearchPage = new FXMLLoader(CourseSearchController.class.getResource("course-search.fxml"));
+            var scene = new Scene(courseSearchPage.load());
+            var controller = (CourseSearchController) courseSearchPage.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setUsers(users);
+            controller.setActiveUser(currentUser);
+            primaryStage.setTitle("Course Search");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void showAlert(String title, String message) {
@@ -129,6 +169,34 @@ public class ReviewController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void setCourseInformation(Course course) {
+        courseInfo.setText(course.getSubject() + " " + course.getCourseNumber() + ": " + course.getTitle());
+        averageRating.setText(course.getRating() == 0.0 ? "No rating" : "" + course.getRating());
+    }
+
+    public void setUpTable(Course course) {
+        ObservableList<Review> tableCourses = FXCollections.observableArrayList();
+        var courseService = new CoursesService();
+        currentCourseID = courseService.retrieveCourseID(course);
+
+        var reviewService = new ReviewsService();
+        var tableReviews = reviewService.retrieveReviewsByCourseID(currentCourseID);
+        for (Review review : tableReviews) {
+            tableCourses.add(review);
+        }
+
+
+        reviewsTable.setItems(tableCourses);
+    }
+
+    public void setUpButtons() {
+        var reviewsService = new ReviewsService();
+        Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
+        deleteButton.setDisable(userReview == null);
+        editButton.setDisable(userReview == null);
+    }
+
 
     public void setCurrentCourse(Course currentCourse) {
         this.currentCourse = currentCourse;

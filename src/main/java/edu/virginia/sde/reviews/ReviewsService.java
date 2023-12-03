@@ -148,4 +148,22 @@ public class ReviewsService {
             }
         }
     }
+
+    public List<Review> retrieveReviewsByCourseID(int id) {
+        DatabaseDriver databaseDriver = null;
+        try {
+            databaseDriver = new DatabaseDriver();
+            return databaseDriver.getReviewsByCourseID(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (databaseDriver != null) {
+                    databaseDriver.disconnect();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

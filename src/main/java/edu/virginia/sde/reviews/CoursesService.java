@@ -56,4 +56,40 @@ public class CoursesService {
             }
         }
     }
+
+    public int retrieveCourseID(Course course) {
+        DatabaseDriver databaseDriver = null;
+        try {
+            databaseDriver = new DatabaseDriver();
+            return databaseDriver.getCourseID(course);
+        } catch (SQLException e) {
+            return 0;
+        } finally {
+            try {
+                if (databaseDriver != null) {
+                    databaseDriver.disconnect();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void updateCourseRating(double updatedRating, int id) {
+        DatabaseDriver databaseDriver = null;
+        try {
+            databaseDriver = new DatabaseDriver();
+            databaseDriver.updateCourseRating(updatedRating, id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (databaseDriver != null) {
+                    databaseDriver.disconnect();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
