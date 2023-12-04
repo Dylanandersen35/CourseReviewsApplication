@@ -74,6 +74,7 @@ public class ReviewController {
 
     @FXML
     private void handleSubmitButtonAction() {
+        System.out.println(mode);
         try {
             int rating = Integer.parseInt(ratingField.getText());
             String comment = commentField.getText();
@@ -90,15 +91,15 @@ public class ReviewController {
                 userReview.setTimestamp((new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.updateReview(userReview);
                 setUpTable(currentCourse);
+                setMode("submit");
             } else {
                 if (reviewsService.hasReviewed(activeUserID, currentCourseID)) {
-                    showAlert("Review Exists", "You have already reviewed this course.");
+                    showAlert("Review Exists", "You have already reviewed this course. Use edit button to change review");
                     return;
                 }
 
                 Review newReview = new Review(activeUserID, coursesService.retrieveCourseID(currentCourse), comment, rating, (new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.addReview(newReview);
-                setMode("Submit");
                 setUpButtons();
             }
 
