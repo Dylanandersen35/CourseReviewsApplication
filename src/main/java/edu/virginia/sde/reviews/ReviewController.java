@@ -109,7 +109,7 @@ public class ReviewController {
             averageRating.setText(String.format("%.2f", updatedRating));
 
         } catch (NumberFormatException e) {
-            showAlert("Invalid Input", "Please enter a valid rating.");
+            showAlert("Invalid Input", "Please enter a valid rating. Make sure there are no blank spaces");
         }
     }
 
