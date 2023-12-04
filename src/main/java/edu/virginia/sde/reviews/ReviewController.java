@@ -175,7 +175,11 @@ public class ReviewController {
 
     public void setCourseInformation(Course course) {
         courseInfo.setText(course.getSubject() + " " + course.getCourseNumber() + ": " + course.getTitle());
-        averageRating.setText(course.getRating() == 0.0 ? "No rating" : String.format("%.2f", course.getRating()));
+        var courseService = new CoursesService();
+        var courseID = courseService.retrieveCourseID(course);
+        var reviewsService = new ReviewsService();
+        var rating = reviewsService.getAverageRating(courseID);
+        averageRating.setText(rating == 0.0 ? "No ratings" : String.format("%.2f", rating));
     }
 
     public void setUpTable(Course course) {

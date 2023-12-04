@@ -162,6 +162,11 @@ public class CourseSearchController {
     public ObservableList<Course> getCourses() {
         ObservableList<Course> tableCourses = FXCollections.observableArrayList();
         for (Course course : courses) {
+            var courseService = new CoursesService();
+            var courseID = courseService.retrieveCourseID(course);
+            var reviewsService = new ReviewsService();
+            var rating = reviewsService.getAverageRating(courseID);
+            course.setRating(rating);
             tableCourses.add(course);
         }
         return tableCourses;
