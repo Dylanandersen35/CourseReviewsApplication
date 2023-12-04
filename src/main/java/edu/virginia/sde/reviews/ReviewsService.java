@@ -41,11 +41,11 @@ public class ReviewsService {
         }
     }
 
-    public Review getUserReview(User user, Course course) {
+    public Review getUserReview(int userID, int courseID) {
         DatabaseDriver databaseDriver = null;
         try {
             databaseDriver = new DatabaseDriver();
-            return databaseDriver.getUserReview(user.getId(), course.getCourseNumber());
+            return databaseDriver.getUserReview(userID, courseID);
         } catch (SQLException e) {
             return null;
         } finally {
@@ -95,11 +95,11 @@ public class ReviewsService {
         }
     }
 
-    public boolean hasReviewed(User user, Course course) {
+    public boolean hasReviewed(int userID, int courseID) {
         DatabaseDriver databaseDriver = null;
         try {
             databaseDriver = new DatabaseDriver();
-            return databaseDriver.hasReviewed(user, course);
+            return databaseDriver.hasReviewed(userID, courseID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

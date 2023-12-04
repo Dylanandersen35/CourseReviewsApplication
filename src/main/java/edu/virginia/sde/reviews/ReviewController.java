@@ -53,6 +53,7 @@ public class ReviewController {
     private List<User> users;
     private Stage primaryStage;
     private int currentCourseID;
+    private int activeUserID;
 
     public void initialize() {
         //courseInfo.setText(currentCourse.getSubject() + " " + currentCourse.getCourseNumber() + ": " + currentCourse.getTitle());
@@ -83,18 +84,18 @@ public class ReviewController {
             }
 
             if ("Edit".equals(mode)) {
-                Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
+                Review userReview = reviewsService.getUserReview(activeUserID, currentCourseID);
                 userReview.setRating(rating);
                 userReview.setReview(comment);
                 userReview.setTimestamp((new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.updateReview(userReview);
             } else {
-                if (reviewsService.hasReviewed(currentUser, currentCourse)) {
+                if (reviewsService.hasReviewed(activeUserID, currentCourseID)) {
                     showAlert("Review Exists", "You have already reviewed this course.");
                     return;
                 }
 
-                Review newReview = new Review(currentUser.getId(), coursesService.retrieveCourseID(currentCourse), comment, rating, (new Timestamp(System.currentTimeMillis())).toString());
+                Review newReview = new Review(activeUserID, coursesService.retrieveCourseID(currentCourse), comment, rating, (new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.addReview(newReview);
             }
 
@@ -202,9 +203,14 @@ public class ReviewController {
 
     public void setUpButtons() {
         var reviewsService = new ReviewsService();
-        Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
+        Review userReview = reviewsService.getUserReview(activeUserID, currentCourseID);
         deleteButton.setDisable(userReview == null);
         editButton.setDisable(userReview == null);
+    }
+
+    public void getCurrentUserID(String username) {
+        var userService = new UserService();
+        activeUserID = userService.retrieveUserID(username);
     }
 
 

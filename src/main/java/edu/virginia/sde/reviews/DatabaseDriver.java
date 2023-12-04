@@ -312,11 +312,11 @@ public class DatabaseDriver {
         connection.commit();
     }
 
-    public boolean hasReviewed(User user, Course course) throws SQLException {
+    public boolean hasReviewed(int userID, int courseID) throws SQLException {
         String query = "SELECT COUNT(*) FROM Reviews WHERE UserID = ? AND CourseID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, user.getId());
-        statement.setInt(2, course.getCourseNumber());
+        statement.setInt(1, userID);
+        statement.setInt(2, courseID);
         ResultSet resultSet = statement.executeQuery();
         return resultSet.next() && resultSet.getInt(1) > 0;
     }

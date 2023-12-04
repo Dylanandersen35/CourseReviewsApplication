@@ -132,6 +132,7 @@ public class MyReviewsController {
             controller.setPrimaryStage(primaryStage);
             controller.setActiveUser(activeUser);
             controller.setUsers(users);
+            controller.getCurrentUserID(activeUser.getUsername());
             controller.setCurrentCourse(course);
             controller.setCourseInformation(course);
             controller.setUpTable(course);
