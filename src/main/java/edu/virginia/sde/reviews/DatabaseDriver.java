@@ -339,6 +339,7 @@ public class DatabaseDriver {
         statement.setInt(1, review.getUserID());
         statement.setInt(2, review.getCourseID());
         statement.executeUpdate();
+        connection.commit();
     }
 
     public List<Review> getReviewsByCourseID(int id) throws SQLException {

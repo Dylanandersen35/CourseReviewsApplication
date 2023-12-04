@@ -113,14 +113,14 @@ public class ReviewController {
     private void handleDeleteButtonAction() {
         List<Review> allReviews = reviewsService.retrieveReviews();
         Review userReview = allReviews.stream()
-                .filter(review -> review.getUserID() == currentUser.getId() && review.getCourseID() == currentCourse.getCourseNumber())
+                .filter(review -> review.getUserID() == currentCourseID && review.getCourseID() == currentCourseID)
                 .findFirst()
                 .orElse(null);
         if (userReview != null) {
             reviewsService.deleteReview(userReview);
-            //refreshReviewsList();
             setUpTable(currentCourse);
         }
+
     }
 
     @FXML
