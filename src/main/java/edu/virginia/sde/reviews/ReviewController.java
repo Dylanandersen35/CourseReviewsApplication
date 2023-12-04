@@ -192,6 +192,14 @@ public class ReviewController {
         reviewsTable.setItems(tableCourses);
     }
 
+    public void setCourseAverageRating(Course course) {
+        var courseService = new CoursesService();
+        var courseID = courseService.retrieveCourseID(course);
+        var reviewsService = new ReviewsService();
+        var rating = reviewsService.getAverageRating(courseID);
+        averageRating.setText(String.format("%.2f", rating));
+    }
+
     public void setUpButtons() {
         var reviewsService = new ReviewsService();
         Review userReview = reviewsService.getUserReview(currentUser, currentCourse);

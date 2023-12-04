@@ -136,6 +136,7 @@ public class MyReviewsController {
             controller.setCourseInformation(course);
             controller.setUpTable(course);
             controller.setUpButtons();
+            controller.setCourseAverageRating(course);
             primaryStage.setTitle("Course Reviews");
             primaryStage.setScene(scene);
             primaryStage.show();
