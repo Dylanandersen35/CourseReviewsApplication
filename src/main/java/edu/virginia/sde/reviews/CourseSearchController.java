@@ -300,6 +300,7 @@ public class CourseSearchController {
             controller.setCourseInformation(course);
             controller.setUpTable(course);
             controller.setUpButtons();
+            controller.setCommentAndRatingField();
             primaryStage.setTitle("Course Reviews");
             primaryStage.setScene(scene);
             primaryStage.show();

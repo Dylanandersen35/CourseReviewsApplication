@@ -89,6 +89,7 @@ public class ReviewController {
                 userReview.setReview(comment);
                 userReview.setTimestamp((new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.updateReview(userReview);
+                setUpTable(currentCourse);
             } else {
                 if (reviewsService.hasReviewed(activeUserID, currentCourseID)) {
                     showAlert("Review Exists", "You have already reviewed this course.");
@@ -97,6 +98,8 @@ public class ReviewController {
 
                 Review newReview = new Review(activeUserID, coursesService.retrieveCourseID(currentCourse), comment, rating, (new Timestamp(System.currentTimeMillis())).toString());
                 reviewsService.addReview(newReview);
+                setMode("Submit");
+                setUpButtons();
             }
 
             setUpTable(currentCourse);
@@ -113,12 +116,19 @@ public class ReviewController {
     private void handleDeleteButtonAction() {
         List<Review> allReviews = reviewsService.retrieveReviews();
         Review userReview = allReviews.stream()
-                .filter(review -> review.getUserID() == currentCourseID && review.getCourseID() == currentCourseID)
+                .filter(review -> review.getUserID() == activeUserID && review.getCourseID() == currentCourseID)
                 .findFirst()
                 .orElse(null);
         if (userReview != null) {
             reviewsService.deleteReview(userReview);
             setUpTable(currentCourse);
+            var updatedRating = reviewsService.getAverageRating(currentCourseID);
+            coursesService.updateCourseRating(updatedRating, currentCourseID);
+            averageRating.setText(String.format("%.2f", updatedRating));
+            setUpButtons();
+            ratingField.setText("");
+            commentField.setText("");
+            setMode("Delete");
         }
 
     }
@@ -127,12 +137,12 @@ public class ReviewController {
     private void handleEditButtonAction() {
         List<Review> allReviews = reviewsService.retrieveReviews();
         Review userReview = allReviews.stream()
-                .filter(review -> review.getUserID() == currentUser.getId() && review.getCourseID() == currentCourse.getCourseNumber())
+                .filter(review -> review.getUserID() == activeUserID && review.getCourseID() == currentCourseID)
                 .findFirst()
                 .orElse(null);
         if (userReview != null) {
-            ratingField.setText(String.valueOf(userReview.getRating()));
-            commentField.setText(userReview.getReview());
+            ratingField.setText("");
+            commentField.setText("");
             setMode("Edit");
         }
     }
@@ -216,6 +226,16 @@ public class ReviewController {
         var userService = new UserService();
         activeUserID = userService.retrieveUserID(username);
     }
+
+    public void setCommentAndRatingField() {
+        var reviewsService = new ReviewsService();
+        Review userReview = reviewsService.getUserReview(activeUserID, currentCourseID);
+        if (userReview != null) {
+            commentField.setText(userReview.getReview());
+            ratingField.setText("" + userReview.getRating());
+        }
+    }
+
 
 
     public void setCurrentCourse(Course currentCourse) {
