@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ReviewController {
 
@@ -99,7 +101,7 @@ public class ReviewController {
             setUpTable(currentCourse);
             var updatedRating = reviewsService.getAverageRating(currentCourseID);
             coursesService.updateCourseRating(updatedRating, currentCourseID);
-            averageRating.setText("" + updatedRating);
+            averageRating.setText(String.format("%.2f", updatedRating));
 
         } catch (NumberFormatException e) {
             showAlert("Invalid Input", "Please enter a valid rating.");
@@ -172,7 +174,7 @@ public class ReviewController {
 
     public void setCourseInformation(Course course) {
         courseInfo.setText(course.getSubject() + " " + course.getCourseNumber() + ": " + course.getTitle());
-        averageRating.setText(course.getRating() == 0.0 ? "No rating" : "" + course.getRating());
+        averageRating.setText(course.getRating() == 0.0 ? "No rating" : String.format("%.2f", course.getRating()));
     }
 
     public void setUpTable(Course course) {
