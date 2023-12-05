@@ -3,13 +3,17 @@
 
 ## Authors
 1) Reece Mullahy, tbp3qy, reecemullahy
-2) Sai Kodali, sk6uzp, saikodali1
+2) Dylan Andersen, msj7wv, dylanandersen35
 3) Max Caboti-Jones, msc2mg, msc2mg
-4) Name, netid, [GitHub profile name]
+4) Sai Kodali, sk6uzp, saikodali1
 
 ## To Run
 
-[Add a brief description of which .java file to run, and what vm arguments are needed]
+Ensure JDK 17.0.9 and JavaFX 17.0.9 are downloaded to your local machine. Go to the CourseReviewsApplication.java 
+class, right-click anywhere in the code, go to "More Run/Debug", and then click "Modify Run Configuration...".
+Now, click "Modify options" and click on "Add VM options". In the "VM options" box, put the following in:
+--module-path "[insert your local machines path to the JavaFX 17.0.9 lib folder here]" --add-modules javafx.controls,javafx.fxml
+Now, you can go to the CourseReviewsApplication.java class, run the class, and the application will open.
 
 ## Contributions
 
@@ -20,11 +24,11 @@ List the primary contributions of each author. It is recommended to update this 
 * Helped implement database and methods for allowing user to log in
 * Helped to develop functions and fxml for Course search allowing user to add and search
 
-### [Author 2 - replace this with their name]
+### [Dylan Andersen]
 
-* Author 2 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Implemented functions to handle various buttons in each scene
+* Helped handle the ratings for each course
+* Helped debug code
 
 ### [Max Caboti-Jones]
 
@@ -40,4 +44,4 @@ List the primary contributions of each author. It is recommended to update this 
 
 ## Issues
 
-List any known issues (bugs, incorrect behavior, etc.) at the time of submission.
+No known issues.
