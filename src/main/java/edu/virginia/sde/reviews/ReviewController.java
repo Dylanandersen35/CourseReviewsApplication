@@ -64,6 +64,16 @@ public class ReviewController {
         reviewColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("Review"));
         ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("Rating"));
 
+        reviewColumn.setCellFactory(column -> {
+            var cell = new TableCell<Review, String>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(reviewColumn.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
+
         reviewsService = new ReviewsService();
         coursesService = new CoursesService();
 
