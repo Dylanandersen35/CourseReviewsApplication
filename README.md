@@ -15,11 +15,10 @@
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1 - replace this with their name]
+### [Reece Mullahy]
 
-* Author 1 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Helped implement database and methods for allowing user to log in
+* Helped to develop functions and fxml for Course search allowing user to add and search
 
 ### [Author 2 - replace this with their name]
 
@@ -34,11 +33,10 @@ List the primary contributions of each author. It is recommended to update this 
 * Created the review object, review controller, reviews service
 * Helped teammates and fixed bugs in other classes
 
-### [Author 4 - replace this with their name]
+### [Sai Kodali]
 
-* Author 4 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Developed functions for Course Review Scene
+* Helped with Review Controller, and reviews services
 
 ## Issues
 
