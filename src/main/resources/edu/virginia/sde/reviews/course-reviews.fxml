@@ -11,37 +11,37 @@
                 <AnchorPane prefHeight="73.0" prefWidth="600.0">
                     <children>
                         <Text fx:id="courseInfo" layoutX="41.0" layoutY="25.0" wrappingWidth="317.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Text>
+                            <font>
+                                <Font size="16.0" />
+                            </font></Text>
                         <Text fx:id="averageRating" layoutX="41.0" layoutY="59.0" wrappingWidth="127.0">
-                     <font>
-                        <Font size="21.0" />
-                     </font></Text>
-                        <Button fx:id="backButton" layoutX="500.0" layoutY="20.0" onAction="#handleBackButtonAction" text="Back" />
+                            <font>
+                                <Font size="21.0" />
+                            </font></Text>
+                        <Button fx:id="backButton" layoutX="538.0" layoutY="24.0" onAction="#handleBackButtonAction" text="Back" />
                     </children>
                 </AnchorPane>
             </top>
             <bottom>
                 <AnchorPane prefHeight="93.0" prefWidth="600.0">
                     <children>
-                        <TextField fx:id="ratingField" layoutX="18.0" layoutY="14.0" prefHeight="26.0" prefWidth="82.0" promptText="Rating" />
-                        <TextArea fx:id="commentField" layoutX="100.0" layoutY="14.0" prefHeight="64.0" prefWidth="400.0" promptText="Comment" />
-                        <Button fx:id="submitButton" layoutX="520.0" layoutY="20.0" onAction="#handleSubmitButtonAction" text="Submit" />
-                        <Button fx:id="deleteButton" layoutX="520.0" layoutY="60.0" onAction="#handleDeleteButtonAction" text="Delete" />
-                        <Button fx:id="editButton" layoutX="450.0" layoutY="48.0" onAction="#handleEditButtonAction" text="Edit" />
+                        <TextField fx:id="ratingField" layoutX="14.0" layoutY="35.0" prefHeight="26.0" prefWidth="82.0" promptText="Rating" />
+                        <TextArea fx:id="commentField" layoutX="109.0" layoutY="23.0" prefHeight="48.0" prefWidth="382.0" promptText="Comment" />
+                        <Button fx:id="submitButton" layoutX="520.0" layoutY="11.0" onAction="#handleSubmitButtonAction" text="Submit" />
+                        <Button fx:id="deleteButton" layoutX="523.0" layoutY="59.0" onAction="#handleDeleteButtonAction" text="Delete" />
+                        <Button fx:id="editButton" layoutX="444.0" layoutY="36.0" onAction="#handleEditButtonAction" text="Edit" />
                     </children>
                 </AnchorPane>
             </bottom>
-         <center>
-            <TableView fx:id="reviewsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn fx:id="timestampColumn" prefWidth="110.0" text="Timestamp" />
-                <TableColumn fx:id="reviewColumn" prefWidth="428.0" text="Review" />
-                  <TableColumn fx:id="ratingColumn" minWidth="0.0" prefWidth="61.0" text="Rating" />
-              </columns>
-            </TableView>
-         </center>
+            <center>
+                <TableView fx:id="reviewsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <columns>
+                        <TableColumn fx:id="timestampColumn" prefWidth="110.0" text="Timestamp" />
+                        <TableColumn fx:id="reviewColumn" prefWidth="428.0" text="Review" />
+                        <TableColumn fx:id="ratingColumn" minWidth="0.0" prefWidth="61.0" text="Rating" />
+                    </columns>
+                </TableView>
+            </center>
         </BorderPane>
     </children>
 </AnchorPane>
