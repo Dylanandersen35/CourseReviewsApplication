@@ -72,7 +72,7 @@ public class CourseSearchController {
             @Override
             protected void updateItem(Double rating, boolean empty) {
                 super.updateItem(rating, empty);
-                setText(empty || rating == 0.0 ? "" : rating.toString());
+                setText(empty || rating == 0.0 ? "" : String.format("%.2f", rating.doubleValue()));
             }
         });
 
