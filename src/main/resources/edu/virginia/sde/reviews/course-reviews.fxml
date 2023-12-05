@@ -36,8 +36,8 @@
             <center>
                 <TableView fx:id="reviewsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                        <TableColumn fx:id="timestampColumn" prefWidth="110.0" text="Timestamp" />
-                        <TableColumn fx:id="reviewColumn" prefWidth="428.0" text="Review" />
+                        <TableColumn fx:id="timestampColumn" prefWidth="160.0" text="Timestamp" />
+                        <TableColumn fx:id="reviewColumn" prefWidth="378.0" text="Review" />
                         <TableColumn fx:id="ratingColumn" minWidth="0.0" prefWidth="61.0" text="Rating" />
                     </columns>
                 </TableView>

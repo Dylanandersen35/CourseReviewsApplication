@@ -56,10 +56,6 @@ public class ReviewController {
     private int activeUserID;
 
     public void initialize() {
-        //courseInfo.setText(currentCourse.getSubject() + " " + currentCourse.getCourseNumber() + ": " + currentCourse.getTitle());
-        //averageRating.setText(String.format("%.2f", reviewsService.getAverageRating(currentCourse.getCourseNumber())));
-        //refreshReviewsList();
-
         timestampColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("Timestamp"));
         reviewColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("Review"));
         ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("Rating"));
@@ -76,10 +72,6 @@ public class ReviewController {
 
         reviewsService = new ReviewsService();
         coursesService = new CoursesService();
-
-        //Review userReview = reviewsService.getUserReview(currentUser, currentCourse);
-        //deleteButton.setDisable(userReview == null);
-        //editButton.setDisable(userReview == null);
     }
 
     @FXML
