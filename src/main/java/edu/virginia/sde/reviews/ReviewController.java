@@ -92,6 +92,10 @@ public class ReviewController {
                 reviewsService.updateReview(userReview);
                 setUpTable(currentCourse);
                 setMode("submit");
+                commentField.setStyle("-fx-border-color: gray");
+                ratingField.setStyle("-fx-border-color: gray");
+                commentField.setDisable(true);
+                ratingField.setDisable(true);
             } else {
                 if (reviewsService.hasReviewed(activeUserID, currentCourseID)) {
                     showAlert("Review Exists", "You have already reviewed this course. Use edit button to change review");
@@ -142,22 +146,13 @@ public class ReviewController {
                 .findFirst()
                 .orElse(null);
         if (userReview != null) {
-            ratingField.setText("");
-            commentField.setText("");
             setMode("Edit");
+            commentField.setDisable(false);
+            ratingField.setDisable(false);
+            commentField.setStyle("-fx-border-color: red");
+            ratingField.setStyle("-fx-border-color: red");
         }
     }
-
-    /*
-    private void refreshReviewsList() {
-        reviewsList.getItems().clear();
-        List<Review> allReviews = reviewsService.retrieveReviews();
-        List<Review> courseReviews = allReviews.stream()
-                .filter(review -> review.getCourseID() == currentCourse.getCourseNumber())
-                .collect(Collectors.toList());
-        reviewsList.getItems().addAll(courseReviews);
-    }
-     */
 
     @FXML
     private void handleBackButtonAction() {
@@ -221,6 +216,8 @@ public class ReviewController {
         Review userReview = reviewsService.getUserReview(activeUserID, currentCourseID);
         deleteButton.setDisable(userReview == null);
         editButton.setDisable(userReview == null);
+        ratingField.setDisable(userReview != null);
+        commentField.setDisable(userReview != null);
     }
 
     public void getCurrentUserID(String username) {
