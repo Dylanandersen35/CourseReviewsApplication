@@ -27,11 +27,12 @@ List the primary contributions of each author. It is recommended to update this 
 * as a bulleted list
 * each line starts with an asterisk and a space
 
-### [Author 3 - replace this with their name]
+### [Max Caboti-Jones]
 
-* Author 3 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Created the MyReviewsPage
+* Created the reviews table in the database
+* Created the review object, review controller, reviews service
+* Helped teammates and fixed bugs in other classes
 
 ### [Author 4 - replace this with their name]
 
