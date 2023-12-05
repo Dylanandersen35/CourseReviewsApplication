@@ -12,6 +12,8 @@ import javafx.collections.ObservableList;
 
 import java.io.IOException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -166,7 +168,9 @@ public class CourseSearchController {
             var courseID = courseService.retrieveCourseID(course);
             var reviewsService = new ReviewsService();
             var rating = reviewsService.getAverageRating(courseID);
-            course.setRating(rating);
+            BigDecimal bd = BigDecimal.valueOf(rating);
+            bd = bd.setScale(2, RoundingMode.HALF_UP);
+            course.setRating(bd.doubleValue());
             tableCourses.add(course);
         }
         return tableCourses;
