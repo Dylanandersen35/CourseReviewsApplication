@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -118,5 +119,10 @@ public class LoginPageController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    public void closeApplication() {
+        Platform.exit();
     }
 }
